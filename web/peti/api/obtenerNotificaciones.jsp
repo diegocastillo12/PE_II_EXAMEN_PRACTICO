@@ -1,27 +1,36 @@
-<%@page contentType="application/json" pageEncoding="UTF-8"%>
+<%@page contentType="application/json" pageEncoding="UTF-8" errorPage="" isErrorPage="false" %>
 <%@page import="negocio.ClsNGrupo, negocio.ClsNPeti"%>
 <%@page import="java.util.*, java.text.SimpleDateFormat"%>
-<%@page import="org.json.simple.*"%>
-
+<%!
+    // Método para escapar caracteres especiales en JSON
+    private String escapeJson(String str) {
+        if (str == null) return "";
+        return str.replace("\\", "\\\\")
+                  .replace("\"", "\\\"")
+                  .replace("\n", "\\n")
+                  .replace("\r", "\\r")
+                  .replace("\t", "\\t");
+    }
+%>
 <%
-    // Verificar si el usuario está logueado
-    String usuario = (String) session.getAttribute("usuario");
-    if (usuario == null) {
-        response.setStatus(401);
-        out.print("{\"success\": false, \"error\": \"No autorizado\"}");
-        return;
-    }
-    
-    Integer usuarioId = (Integer) session.getAttribute("usuarioId");
-    Integer grupoId = (Integer) session.getAttribute("grupoId");
-    
-    if (grupoId == null) {
-        out.print("{\"success\": false, \"error\": \"No hay grupo activo\"}");
-        return;
-    }
-    
     try {
         response.setContentType("application/json");
+        response.setHeader("Cache-Control", "no-cache");
+        
+        // Verificar si el usuario está logueado
+        String usuario = (String) session.getAttribute("usuario");
+        if (usuario == null) {
+            out.print("{\"success\": false, \"error\": \"No autorizado\"}");
+            return;
+        }
+        
+        Integer usuarioId = (Integer) session.getAttribute("usuarioId");
+        Integer grupoId = (Integer) session.getAttribute("grupoId");
+        
+        if (grupoId == null) {
+            out.print("{\"success\": false, \"error\": \"No hay grupo activo. Usuario: " + usuario + "\"}");
+            return;
+        }
         
         // Obtener información de notificaciones
         ClsNPeti negocioPeti = new ClsNPeti();
@@ -30,8 +39,8 @@
         // Obtener cambios recientes (últimos 10)
         List<Map<String, Object>> cambiosRecientes = negocioPeti.obtenerCambiosRecientes(grupoId, 10);
         
-        // Obtener miembros activos del grupo
-        List<Map<String, Object>> miembrosActivos = negocioGrupo.obtenerMiembrosGrupo(grupoId);
+        // Obtener miembros activos del grupo (MEJORA 1: método específico para notificaciones)
+        List<Map<String, Object>> miembrosActivos = negocioGrupo.obtenerMiembrosGrupoParaNotificaciones(grupoId);
         
         // Construir respuesta JSON manualmente (sin librería externa)
         StringBuilder json = new StringBuilder();
@@ -79,20 +88,10 @@
         out.print(json.toString());
         
     } catch (Exception e) {
-        response.setStatus(500);
-        out.print("{\"success\": false, \"error\": \"Error interno: " + escapeJson(e.getMessage()) + "\"}");
-        e.printStackTrace();
-    }
-%>
-
-<%!
-    // Método para escapar caracteres especiales en JSON
-    private String escapeJson(String str) {
-        if (str == null) return "";
-        return str.replace("\\", "\\\\")
-                  .replace("\"", "\\\"")
-                  .replace("\n", "\\n")
-                  .replace("\r", "\\r")
-                  .replace("\t", "\\t");
+        // Enviar JSON de error al cliente
+        response.setContentType("application/json");
+        String errorMsg = e.getMessage();
+        if (errorMsg == null) errorMsg = "Error desconocido";
+        out.print("{\"success\": false, \"error\": \"" + escapeJson(errorMsg) + "\", \"errorType\": \"" + e.getClass().getSimpleName() + "\"}");
     }
 %>

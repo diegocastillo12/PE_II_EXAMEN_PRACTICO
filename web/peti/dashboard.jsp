@@ -437,81 +437,6 @@
             margin-right: 8px;
         }
 
-        /* MEJORA 2: Estilos para botones de respaldo */
-        .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-            margin-right: 8px;
-        }
-
-        .btn-success:hover {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-success i {
-            margin-right: 8px;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            text-decoration: none;
-            margin-right: 8px;
-        }
-
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-        }
-
-        .btn-warning i {
-            margin-right: 8px;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -977,16 +902,6 @@
                                 </span>
                             <% } %>
                         </div>
-                        <% if ("admin".equals(rolUsuario)) { %>
-                        <!-- MEJORA 2: Botones de Respaldo y Restauración -->
-                        <button class="btn-success" onclick="exportarRespaldo()" title="Exportar respaldo de datos">
-                            <i class="fas fa-download"></i> Exportar Respaldo
-                        </button>
-                        <button class="btn-warning" onclick="document.getElementById('fileRestore').click()" title="Restaurar desde respaldo">
-                            <i class="fas fa-upload"></i> Restaurar
-                        </button>
-                        <input type="file" id="fileRestore" accept=".json" style="display: none;" onchange="restaurarRespaldo(this.files[0])">
-                        <% } %>
                         <button class="btn-primary" onclick="verHistorial()">
                             <i class="fas fa-history"></i> Historial de Cambios
                         </button>
@@ -1534,142 +1449,6 @@
             setInterval(checkForUpdates, 30000);
         <% } %>
         
-        <% if ("admin".equals(rolUsuario)) { %>
-        // MEJORA 2: Funciones de Respaldo y Restauración
-        function exportarRespaldo() {
-            // Mostrar mensaje de carga
-            const loadingMsg = document.createElement('div');
-            loadingMsg.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 30px;
-                border-radius: 12px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-                z-index: 10000;
-                text-align: center;
-            `;
-            loadingMsg.innerHTML = `
-                <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: #667eea; margin-bottom: 15px;"></i>
-                <p style="margin: 0; font-weight: 600; color: #2d3748;">Generando respaldo...</p>
-            `;
-            document.body.appendChild(loadingMsg);
-            
-            // Descargar el archivo
-            window.location.href = 'api/exportarRespaldo.jsp';
-            
-            // Remover mensaje después de 2 segundos
-            setTimeout(() => {
-                loadingMsg.remove();
-                mostrarNotificacion('Respaldo exportado exitosamente', 'success');
-            }, 2000);
-        }
-        
-        function restaurarRespaldo(file) {
-            if (!file) {
-                alert('No se seleccionó ningún archivo');
-                return;
-            }
-            
-            if (!file.name.endsWith('.json')) {
-                alert('Por favor seleccione un archivo JSON válido');
-                return;
-            }
-            
-            if (!confirm('¿Está seguro de restaurar los datos? Esto sobrescribirá los datos actuales del grupo.')) {
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const jsonData = e.target.result;
-                
-                // Mostrar loader
-                const loader = document.createElement('div');
-                loader.id = 'restore-loader';
-                loader.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0,0,0,0.8);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 10000;
-                `;
-                loader.innerHTML = `
-                    <div style="background: white; padding: 40px; border-radius: 12px; text-align: center;">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 48px; color: #667eea; margin-bottom: 20px;"></i>
-                        <p style="margin: 0; font-weight: 600; font-size: 18px; color: #2d3748;">Restaurando datos...</p>
-                        <p style="margin: 10px 0 0 0; color: #64748b;">Por favor espere</p>
-                    </div>
-                `;
-                document.body.appendChild(loader);
-                
-                // Enviar al servidor
-                fetch('api/restaurarRespaldo.jsp', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: jsonData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    loader.remove();
-                    
-                    if (data.success) {
-                        mostrarNotificacion(`Datos restaurados: ${data.registrosRestaurados} registros`, 'success');
-                        
-                        // Recargar después de 2 segundos
-                        setTimeout(() => {
-                            location.reload();
-                        }, 2000);
-                    } else {
-                        alert('Error al restaurar: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    loader.remove();
-                    alert('Error al restaurar datos: ' + error.message);
-                });
-            };
-            
-            reader.readAsText(file);
-        }
-        
-        function mostrarNotificacion(mensaje, tipo) {
-            const notif = document.createElement('div');
-            const color = tipo === 'success' ? '#4CAF50' : (tipo === 'warning' ? '#ff9800' : '#f44336');
-            notif.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${color};
-                color: white;
-                padding: 15px 25px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                z-index: 10000;
-                animation: slideInRight 0.3s ease;
-            `;
-            notif.innerHTML = `
-                <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
-                ${mensaje}
-            `;
-            document.body.appendChild(notif);
-            
-            setTimeout(() => {
-                notif.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => notif.remove(), 300);
-            }, 3000);
-        }
-        <% } %>
-        
         // Función para navegar entre secciones
         function navigateToSection(section) {
             <% if (modoColaborativo) { %>
@@ -1692,11 +1471,5 @@
             });
         });
     </script>
-    
-    <% if (modoColaborativo) { %>
-    <!-- MEJORA 1: Sistema de Notificaciones en Tiempo Real -->
-    <div style="display: none;" data-grupo-id="<%= grupoId %>"></div>
-    <script src="js/notifications.js"></script>
-    <% } %>
 </body>
 </html>

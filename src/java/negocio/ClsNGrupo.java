@@ -707,4 +707,43 @@ public class ClsNGrupo {
         
         return 0;
     }
+    
+    /**
+     * MEJORA 1: Obtiene miembros del grupo para sistema de notificaciones
+     * Retorna Map con username, rol y estado activo para compatibilidad con JSP
+     * @param grupoId ID del grupo
+     * @return Lista de Maps con datos de miembros
+     */
+    public List<Map<String, Object>> obtenerMiembrosGrupoParaNotificaciones(int grupoId) {
+        List<Map<String, Object>> miembros = new ArrayList<>();
+        String sql = "SELECT u.username, mg.rol, u.activo, mg.fecha_union " +
+                     "FROM miembros_grupo mg " +
+                     "INNER JOIN usuarios u ON mg.usuario_id = u.id " +
+                     "WHERE mg.grupo_id = ? " +
+                     "ORDER BY mg.fecha_union DESC";
+        
+        try (Connection cn = Conexion.getConexion();
+             PreparedStatement ps = cn.prepareStatement(sql)) {
+            
+            ps.setInt(1, grupoId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Map<String, Object> miembro = new HashMap<>();
+                miembro.put("username", rs.getString("username"));
+                miembro.put("rol", rs.getString("rol"));
+                // Convertir activo (1/0) a "true"/"false" para JSON
+                miembro.put("activo", rs.getInt("activo") == 1 ? "true" : "false");
+                miembros.add(miembro);
+            }
+            
+            System.out.println("✓ Obtenidos " + miembros.size() + " miembros para notificaciones");
+            
+        } catch (SQLException e) {
+            System.err.println("✗ Error al obtener miembros para notificaciones: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return miembros;
+    }
 }

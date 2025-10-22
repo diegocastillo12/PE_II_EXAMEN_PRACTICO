@@ -109,152 +109,166 @@ Facilitar la creación colaborativa de planes estratégicos empresariales median
 
 ## 🚀 MEJORAS IMPLEMENTADAS
 
-### ⭐ **MEJORA 1: Sistema de Notificaciones en Tiempo Real**
+### ⭐ **MEJORA 1: Dashboard Estadístico en Tiempo Real**
 
 #### 📸 Capturas de Pantalla:
-![Notificaciones en Tiempo Real](docs/screenshots/mejora1_notificaciones.png)
+![Dashboard Estadístico](docs/screenshots/mejora1_dashboard.png)
 
 #### 📝 Descripción:
-Sistema completo de notificaciones que permite a los usuarios ver la actividad del grupo en tiempo real sin necesidad de recargar la página.
+Sistema completo de dashboard con métricas estadísticas y gráficos interactivos que permite visualizar el progreso del PETI, actividad del equipo y rendimiento colaborativo en tiempo real.
 
 #### 🔧 Características Técnicas:
-- **Panel flotante de notificaciones** con diseño moderno
-- **Actualización automática** cada 30 segundos mediante AJAX
-- **Indicador de usuarios activos** del grupo
-- **Historial de cambios recientes** con timestamps
-- **Badges visuales** con contador de notificaciones
-- **Animaciones CSS** para mejor UX
+- **8 tarjetas estadísticas animadas** con datos en tiempo real
+- **2 gráficos interactivos** con Chart.js (barras y líneas)
+- **Actualización automática** cada 30 segundos
+- **Cálculo dinámico** de métricas desde base de datos
+- **Diseño responsivo** con animaciones CSS3
+- **Indicadores visuales** con colores y tendencias
+
+#### 📊 Métricas Implementadas:
+1. **Progreso PETI** - Porcentaje de completitud con barra de progreso
+2. **Miembros Activos** - Cantidad de colaboradores del equipo
+3. **Cambios Hoy** - Modificaciones realizadas en el día actual
+4. **Cambios Esta Semana** - Actividad de los últimos 7 días
+5. **Secciones Completadas** - Contador de secciones finalizadas (de 9 totales)
+6. **Sección Más Editada** - Área con mayor actividad
+7. **Usuario Más Activo** - Colaborador con más contribuciones
+8. **Última Actividad** - Timestamp de la modificación más reciente
+
+#### � Gráficos Interactivos:
+1. **Progreso por Sección (Gráfico de Barras):**
+   - 9 secciones del PETI visualizadas
+   - Código de colores por sección
+   - Porcentaje de completitud
+   - Animación al cargar
+
+2. **Actividad de la Semana (Gráfico de Líneas):**
+   - Cambios por día de los últimos 7 días
+   - Vista de tendencia temporal
+   - Área sombreada bajo la curva
+   - Interactividad al hacer hover
 
 #### 📂 Archivos Implementados:
 ```
-web/peti/api/obtenerNotificaciones.jsp  - API REST para obtener notificaciones
-web/peti/js/notifications.js            - Lógica del sistema de notificaciones
-src/java/negocio/ClsNPeti.java          - Método obtenerCambiosRecientes()
-web/peti/dashboard.jsp                  - Integración en el dashboard
+web/peti/dashboard.jsp                  - Dashboard completo con tarjetas y gráficos
+src/java/negocio/ClsNPeti.java          - Métodos de cálculo de estadísticas
+web/peti/dashboard.css                  - Estilos modernos y animaciones
 ```
 
 #### 💻 Tecnologías Utilizadas:
-- **JSP** para API REST
-- **JavaScript puro** (sin librerías externas)
-- **AJAX** con Fetch API
-- **CSS3** con animaciones
-- **JSON** construcción manual sin librerías
+- **JSP** con scriptlets para cálculo dinámico
+- **Chart.js 4.4** para gráficos interactivos
+- **JavaScript ES6** para actualización automática
+- **CSS3** con animaciones y gradientes
+- **Font Awesome 6.4** para iconos
+- **Java** para lógica de negocio en backend
 
 #### ⚡ Funcionalidades:
-1. **Tab de Cambios Recientes:**
-   - Muestra las últimas 10 modificaciones
-   - Indica usuario, sección y fecha/hora
-   - Diferencia entre cambios nuevos y antiguos
+1. **Tarjetas Animadas:**
+   - Efecto fadeInUp escalonado
+   - Hover con elevación
+   - Iconos temáticos por métrica
+   - Valores en tiempo real
 
-2. **Tab de Miembros Activos:**
-   - Lista todos los miembros del grupo
-   - Muestra roles (Admin/Miembro)
-   - Indicador visual de estado activo
-   - Avatares con iniciales
+2. **Historial de Actividad:**
+   - Feed de cambios recientes (últimos 10)
+   - Avatar de usuario con iniciales
+   - Previsualización de contenido
+   - Timestamps relativos
+   - Botón para ver historial completo
 
-3. **Actualización Automática:**
-   - Polling cada 30 segundos
-   - Timestamp de última actualización
-   - Botón de actualización manual
+3. **Auto-actualización:**
+   - Verificación de cambios cada 30 segundos
+   - Recarga inteligente solo si hay modificaciones
+   - Sin interrumpir la experiencia del usuario
 
-4. **UI/UX:**
-   - Diseño moderno con gradientes
-   - Iconos Font Awesome
-   - Animaciones suaves
-   - Responsive design
-   - Badge con contador pulsante
+4. **UI/UX Premium:**
+   - Diseño moderno tipo neumorfismo
+   - Paleta de colores profesional
+   - Transiciones suaves
+   - 100% responsive
+   - Degradados sutiles
 
 ---
 
-### ⭐ **MEJORA 2: Sistema de Respaldo y Restauración de Datos**
+### ⭐ **MEJORA 2: Feed de Actividad Reciente del Grupo**
 
 #### 📸 Capturas de Pantalla:
-![Sistema de Respaldo](docs/screenshots/mejora2_respaldo_exportar.png)
-![Sistema de Restauración](docs/screenshots/mejora2_respaldo_restaurar.png)
+![Actividad Reciente](docs/screenshots/mejora2_actividad_reciente.png)
 
 #### 📝 Descripción:
-Sistema completo de backup y restore que permite a los administradores exportar e importar todos los datos del PETI en formato JSON, facilitando respaldos de seguridad y migración de datos.
+Sistema de feed de actividad en tiempo real que muestra un historial detallado de todas las modificaciones realizadas por los miembros del grupo, permitiendo un seguimiento completo de los cambios en el PETI con acceso al historial completo.
 
 #### 🔧 Características Técnicas:
-- **Exportación a JSON** sin librerías externas
-- **Construcción manual de JSON** desde Java
-- **Parser JSON personalizado** sin dependencias
-- **Validación de formato** de archivos
-- **Control de permisos** (solo administradores)
-- **Interfaz con loader** y feedback visual
+- **Feed en tiempo real** de las últimas 10 actividades
+- **Avatares personalizados** con iniciales de usuarios
+- **Previsualización de contenido** modificado
+- **Timestamps precisos** de cada cambio
+- **Iconos contextuales** según el tipo de acción
+- **Botón de acceso al historial completo** integrado
 
 #### 📂 Archivos Implementados:
 ```
-web/peti/api/exportarRespaldo.jsp     - API para exportar datos a JSON
-web/peti/api/restaurarRespaldo.jsp    - API para importar datos desde JSON
-web/peti/dashboard.jsp                - Botones y funciones de respaldo
-src/java/negocio/ClsNPeti.java        - Métodos de obtención de datos
+web/peti/dashboard.jsp                  - Sección de actividad reciente
+web/peti/historial_cambios.jsp         - Vista completa del historial
+src/java/negocio/ClsNPeti.java          - Método obtenerHistorial()
+web/peti/dashboard.css                  - Estilos del feed de actividad
 ```
 
 #### 💻 Tecnologías Utilizadas:
-- **JSP** para generación de JSON
-- **Java** sin librerías externas
-- **JavaScript** para upload de archivos
-- **FileReader API** del navegador
-- **Construcción manual de JSON** (sin org.json)
+- **JSP** con JSTL para renderizado dinámico
+- **Java** para consultas a base de datos
+- **JavaScript** para actualización automática
+- **CSS3** con efectos hover y transiciones
+- **Font Awesome** para iconografía
+- **MySQL** con tabla peti_historial
 
 #### ⚡ Funcionalidades:
 
-1. **Exportar Respaldo:**
-   - Botón "Exportar Respaldo" en el dashboard
-   - Genera archivo JSON con todos los datos del grupo
-   - Incluye metadata (fecha, usuario, versión)
-   - Nombre del archivo automático: `PETI_Respaldo_GrupoX_YYYYMMDD_HHMMSS.json`
-   - Descarga automática
-   - Loader visual durante el proceso
+1. **Feed de Actividad:**
+   - Muestra las últimas 10 modificaciones del grupo
+   - Cada elemento incluye:
+     * Avatar circular con iniciales del usuario
+     * Nombre del usuario que realizó el cambio
+     * Acción realizada (modificó, agregó, eliminó)
+     * Campo específico modificado
+     * Sección del PETI afectada
+     * Vista previa del contenido nuevo (truncado)
+     * Timestamp con fecha y hora exacta
 
-2. **Restaurar Respaldo:**
-   - Botón "Restaurar" con selector de archivos
-   - Validación de formato JSON
-   - Confirmación de sobrescritura
-   - Parser JSON manual sin librerías
-   - Actualización masiva en base de datos
-   - Feedback de registros restaurados
-   - Recarga automática al completar
+2. **Indicadores Visuales:**
+   - Avatar con color distintivo por usuario
+   - Iconos según el tipo de cambio (edición, adición, eliminación)
+   - Hover effect con elevación de tarjeta
+   - Colores por sección del PETI
+   - Timestamp formateado (DD/MM/YYYY HH:MM)
 
-3. **Seguridad:**
-   - Solo usuarios con rol "admin" pueden exportar/restaurar
-   - Validación de permisos en backend
-   - Escape de caracteres en JSON
-   - Manejo de errores robusto
+3. **Interactividad:**
+   - Botón "Ver Historial Completo" para acceder a todos los cambios
+   - Actualización automática cada 30 segundos
+   - Smooth scroll en el contenedor
+   - Click en cada item para ver detalle (opcional)
 
-4. **Formato del Respaldo:**
-```json
-{
-  "success": true,
-  "grupoId": 7,
-  "fechaExportacion": "2025-10-22 14:30:45",
-  "usuarioExportacion": "admin",
-  "version": "1.0",
-  "datos": {
-    "empresa": {
-      "nombre": "Mi Empresa",
-      "sector": "Tecnología",
-      "ubicacion": "Lima, Perú",
-      "descripcion": "Descripción de la empresa..."
-    },
-    "mision": {
-      "declaracion": "Nuestra misión es..."
-    },
-    "vision": {
-      "declaracion": "Nuestra visión es..."
-    }
-    // ... más secciones
-  }
-}
-```
+4. **Historial Completo:**
+   - Página dedicada (`historial_cambios.jsp`)
+   - Todos los cambios sin límite
+   - Filtros por usuario, sección y fecha
+   - Búsqueda de cambios específicos
+   - Exportación de historial
 
 5. **UI/UX:**
-   - Botones con iconos diferenciados (verde para exportar, naranja para restaurar)
-   - Loader de pantalla completa durante restauración
-   - Notificaciones de éxito/error
-   - Animaciones suaves
-   - Responsive design
+   - Diseño tipo timeline moderno
+   - Estado vacío con mensaje amigable
+   - Animaciones de carga
+   - Responsive para móviles
+   - Scroll suave en lista larga
+
+#### 🎯 Beneficios:
+- **Transparencia total** de cambios en el equipo
+- **Trazabilidad completa** de modificaciones
+- **Auditoría de actividad** colaborativa
+- **Detección de conflictos** entre usuarios
+- **Seguimiento de progreso** en tiempo real
 
 ---
 
