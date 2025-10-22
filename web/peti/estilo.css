@@ -1,0 +1,64 @@
+/* CAMBIOS SIMPLIFICADOS - Reemplazar o agregar estos estilos */
+
+/* Ajustes para el contenedor principal del dashboard */
+.dashboard-container {
+    width: 100%;
+    max-width: none; /* Quitar el max-width de 1200px para pantalla completa */
+    height: 100vh;
+    background-color: transparent; /* Quitar el fondo blanco con transparencia */
+    border-radius: 0; /* Quitar border-radius */
+    box-shadow: none; /* Quitar sombra */
+    display: flex;
+    overflow: hidden;
+    margin: 0; /* Asegurar que no haya márgenes */
+}
+
+/* Ajuste del sidebar */
+.dashboard-sidebar {
+    width: 280px; /* Un poco más ancho */
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Mejora del perfil de usuario */
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 30px;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-right: 0;
+}
+
+/* Ajuste del área de contenido */
+.dashboard-content {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+}
+
+/* Área principal del dashboard */
+.dashboard-main {
+    padding: 30px;
+}
