@@ -112,7 +112,8 @@ Facilitar la creación colaborativa de planes estratégicos empresariales median
 ### ⭐ **MEJORA 1: Dashboard Estadístico en Tiempo Real**
 
 #### 📸 Capturas de Pantalla:
-![Dashboard Estadístico](docs/screenshots/mejora1_dashboard.png)
+<img width="1595" height="447" alt="image" src="https://github.com/user-attachments/assets/7b5564ef-0a7d-4827-9da7-a459bb257f49" />
+
 
 #### 📝 Descripción:
 Sistema completo de dashboard con métricas estadísticas y gráficos interactivos que permite visualizar el progreso del PETI, actividad del equipo y rendimiento colaborativo en tiempo real.
@@ -194,7 +195,8 @@ web/peti/dashboard.css                  - Estilos modernos y animaciones
 ### ⭐ **MEJORA 2: Feed de Actividad Reciente del Grupo**
 
 #### 📸 Capturas de Pantalla:
-![Actividad Reciente](docs/screenshots/mejora2_actividad_reciente.png)
+<img width="1571" height="426" alt="image" src="https://github.com/user-attachments/assets/33b9dad2-980a-4863-a964-9f393376193c" />
+
 
 #### 📝 Descripción:
 Sistema de feed de actividad en tiempo real que muestra un historial detallado de todas las modificaciones realizadas por los miembros del grupo, permitiendo un seguimiento completo de los cambios en el PETI con acceso al historial completo.
